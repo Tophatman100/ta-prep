@@ -23,7 +23,7 @@ app.post("/todos", (req, res) => {
 });
 
 app.get("/todos", (req, res) => {
-  let str = `SELECT todo FROM todos`;
+  let str = `SELECT * FROM todos`;
   db.query(str, (err, todos) => {
     if (err) {
       res.send(err, "error in DB retrieval");

@@ -9,8 +9,8 @@ CREATE TABLE todos (
     todo VARCHAR(30) NOT NULL,
     priority_id INT NOT NULL 
 );
-CREATE TABLE priority (
-    FOREIGN KEY priorityLow REFERENCES priority_id
-    priorityHigh
-);
+-- CREATE TABLE priority (
+--     FOREIGN KEY priorityLow REFERENCES priority_id
+--     priorityHigh
+-- );
 
