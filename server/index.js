@@ -10,8 +10,11 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../dist"));
 
 app.post("/todos", (req, res) => {
-  console.log(req.body, "<----req.body in post");
-  let val = req.body.payload;
+  console.log(req.body.payload, "<----req.body.payload in post");
+  let val = req.body.payload.value;
+  // console.log(val, "<----val in post");
+  let priority = req.body.payload.priority;
+  // console.log(priority, "<----priority in post");
   let str = `INSERT INTO todos (todo) VALUES ('${val}')`;
   db.query(str, (err, results) => {
     if (err) {

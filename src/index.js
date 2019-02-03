@@ -8,13 +8,14 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [""],
-      formValue: ""
+      formValue: "",
+      priority: 0
     };
   }
   componentDidMount() {
     let url = "/todos";
     Axios.get(url).then(response => {
-      console.log(response.data, "<--WTF IS THIS?!");
+      console.log(response.data, "<--response from onmount get request");
       let stuff = response.data;
       let newState = stuff.map(thing => thing.todo);
       this.setState({
@@ -26,7 +27,7 @@ class App extends React.Component {
     e.preventDefault();
     console.log(this);
     let url = "/todos";
-    let payload = this.state.formValue;
+    let payload = { value: this.state.formValue, priority: this.state.priority };
 
     Axios.post(url, { payload })
       .then(results => {
@@ -48,8 +49,13 @@ class App extends React.Component {
             onChange={e => {
               this.setState({ formValue: e.target.value });
             }}
+
           />
           <input type="submit" onClick={e => this.handlePost(e)} />
+          <label for="highPriority">High Priority</label>
+          <input onChange={e => { this.setState({ priority: 1 }); }} type="radio" id="highPriority" value="high" name="priority"></input>
+          <label for="lowPriority">Low Priority</label>
+          <input onChange={e => { this.setState({ priority: 0 }); }} type="radio" id="lowPriority" value="low" name="priority"></input>
         </form>
         <h1>HERES YO TODO LIST</h1>
         <ToDoList todos={this.state.todos} />
