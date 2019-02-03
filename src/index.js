@@ -32,6 +32,11 @@ class App extends React.Component {
     Axios.post(url, { payload })
       .then(results => {
         console.log("successful post request");
+        let stuff = results.data;
+        let newState = stuff.map(thing => thing.todo);
+        this.setState({
+          todos: newState
+        });
       })
       .catch(err => {
         alert(err);

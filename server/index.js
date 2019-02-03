@@ -10,17 +10,33 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../dist"));
 
 app.post("/todos", (req, res) => {
-  console.log(req.body.payload, "<----req.body.payload in post");
+  // console.log(req.body.payload, "<----req.body.payload in post");
   let val = req.body.payload.value;
   // console.log(val, "<----val in post");
   let priority = req.body.payload.priority;
   // console.log(priority, "<----priority in post");
-  let str = `INSERT INTO todos (todo) VALUES ('${val}')`;
-  db.query(str, (err, results) => {
+  let todoStr = `INSERT INTO todos (todo, priority_id) VALUES ('${val}', '${priority}')`;
+  let priorityStr = `INSERT INTO priority (todo_id) VALUES ('${priority}')`;
+  console.log(todoStr);
+  db.query(todoStr, (err, results) => {
     if (err) {
-      res.send("error in db insertion");
+      res.send("error in db todo insertion");
     } else {
-      res.send("AWWW YEET ITS IN THERE");
+      db.query(priorityStr, (err, response) => {
+        if (err) {
+          res.send("error in db priority insertion")
+        } else {
+          let getStr = `SELECT * FROM todos`;
+          db.query(getStr, (err, todos) => {
+            if (err) {
+              res.send(err, "error in DB getStr retrieval");
+            } else {
+              console.log("successful retrieval");
+              res.send(todos);
+            }
+          });
+        }
+      });
     }
   });
 });
